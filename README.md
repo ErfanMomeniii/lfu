@@ -2,7 +2,7 @@
 <img src="./assets/photos/logo.png" width=50% height=50%>
 </p>
 <p align="center">
-<a href="https://pkg.go.dev/github.com/mehditeymorian/koi/v3?tab=doc"target="_blank">
+<a href="https://pkg.go.dev/github.com/erfanmomeniii/lfu?tab=doc"target="_blank">
     <img src="https://img.shields.io/badge/Go-1.20+-00ADD8?style=for-the-badge&logo=go" alt="go version" />
 </a>
 
