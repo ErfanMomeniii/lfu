@@ -1,6 +1,8 @@
 package lfu
 
-import "github.com/erfanmomeniii/heap"
+import (
+	"github.com/erfanmomeniii/heap"
+)
 
 const DefaultSize int64 = 2000
 
@@ -13,12 +15,17 @@ type Lfu struct {
 
 // Get returns the value associated with the inputted key.
 func (l *Lfu) Get(key any) any {
+	if _, ok := l.values[key]; ok {
+		l.frequents[key]++
+		l.minHeap.Update(key, l.frequents[key])
+	}
+
 	return l.values[key]
 }
 
 // purge removes the least used element from cache.
 func (l *Lfu) purge() {
-	if len(l.values) > int(l.size) {
+	if len(l.values) >= int(l.size) {
 		_, key := l.minHeap.GetMin()
 		l.minHeap.Delete()
 		delete(l.values, key)
@@ -31,16 +38,16 @@ func (l *Lfu) purge() {
 // Set adds or updates with inputted key and value.
 func (l *Lfu) Set(key any, value any) {
 	if _, ok := l.values[key]; ok {
-		// TODO update heap
 		l.values[key] = value
 		l.frequents[key]++
+		l.minHeap.Update(key, l.frequents[key])
 	} else {
-		l.minHeap.Insert(1, key)
+		l.purge()
 		l.values[key] = value
 		l.frequents[key] = 1
+		l.minHeap.Insert(l.frequents[key], key)
 	}
 
-	l.purge()
 	return
 }
 
