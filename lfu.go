@@ -6,6 +6,7 @@ import (
 
 const DefaultSize int64 = 2000
 
+// Lfu is an instantiation of the lfu.
 type Lfu struct {
 	values    map[any]any
 	frequents map[any]int
@@ -58,10 +59,12 @@ func (l *Lfu) Has(key any) bool {
 	return ok
 }
 
+// New creates a new instance of a lfu.
 func New(size ...int64) *Lfu {
 	s := DefaultSize
 	if len(size) > 0 {
 		s = size[0]
 	}
+
 	return &Lfu{values: make(map[any]any), frequents: make(map[any]int), minHeap: heap.NewMin(), size: s}
 }
